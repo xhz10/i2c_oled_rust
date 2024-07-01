@@ -1,7 +1,8 @@
 [package]
 name = "i2c_oled_rust"
-version = "0.1.0"
-edition = "2021"
+version = "1.1.0"
+edition = "2024"
+description = "根据按钮控制显示屏展示dht11数据或者是系统元数据信息"
 
 [dependencies]
 embedded-graphics = "0.7.1"

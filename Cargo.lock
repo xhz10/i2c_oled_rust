@@ -146,7 +146,7 @@ dependencies = [
 
 [[package]]
 name = "i2c_oled_rust"
-version = "0.1.0"
+version = "1.1.0"
 dependencies = [
  "dht11",
  "dht11_gpio",
