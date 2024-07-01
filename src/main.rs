@@ -1,9 +1,7 @@
 use std::sync::{Arc, Mutex};
-use embedded_graphics::{prelude::*};
 use ssd1306::{size::DisplaySize128x64};
 use std::thread;
 use std::time::Duration;
-use rppal::gpio::Trigger;
 use rppal::i2c::I2c;
 use ssd1306::prelude::I2CInterface;
 use i2c_oled_rust::button::button_init;
@@ -22,10 +20,10 @@ fn main() {
     let mut display: _ = init_i2c_display(i2c_interface);
     let sys = SystemOperation::new();
     // 创建一个事件队列
-    let mut queue = Arc::new(Mutex::new(EventQueue::new()));
+    let queue = Arc::new(Mutex::new(EventQueue::new()));
     let pop_queue = queue.clone();
     // 初始化按钮的pin操作,设置按钮中断 低电平触发
-    button_init(queue);
+    let _pin = button_init(queue);
     // 获取展示的position
     let cpu_show_position = cpu_display_info();
     let dht11_show_position = dht11_display_info();

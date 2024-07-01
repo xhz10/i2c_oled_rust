@@ -3,7 +3,9 @@ use std::collections::VecDeque;
 // 定义事件类型枚举
 #[derive(PartialEq, Eq)]
 pub enum Event {
-    BUTTON
+    BUTTON,
+    SystemShow,
+    Dht11Show
 }
 
 // 事件队列结构体
