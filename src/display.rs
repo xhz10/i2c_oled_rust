@@ -1,11 +1,6 @@
-use embedded_graphics::{
-    mono_font::{MonoFont, MonoTextStyle, MonoTextStyleBuilder},
-    pixelcolor::BinaryColor,
-    prelude::Point,
-    text::Text,
-    Drawable,
-};
-use ssd1306::{mode::BufferedGraphicsMode, prelude::*, Ssd1306};
+use embedded_graphics::{mono_font::{MonoFont, MonoTextStyle, MonoTextStyleBuilder}, pixelcolor::BinaryColor, prelude::Point, text::Text, Drawable, mono_font};
+use rppal::i2c::I2c;
+use ssd1306::{I2CDisplayInterface, mode::BufferedGraphicsMode, prelude::*, Ssd1306};
 
 pub struct GraphicDisplay<'a, DI, DS: DisplaySize> {
     display: Ssd1306<DI, DS, BufferedGraphicsMode<DS>>,
@@ -56,3 +51,72 @@ where
     }
 
 }
+
+pub fn init_i2c_display(i2c_interface :I2CInterface<I2c>) -> GraphicDisplay<I2CInterface<I2c>, DisplaySize128x64>{
+    GraphicDisplay::new(
+        i2c_interface,
+        DisplaySize128x64,
+        &mono_font::ascii::FONT_9X15_BOLD,
+    )
+}
+
+pub fn cpu_display_info() -> (DisplayInfo,DisplayInfo,DisplayInfo,DisplayInfo) {
+    let top_display = DisplayInfo {
+        pos: Point::new(0, 10),
+        style: MonoTextStyleBuilder::new()
+            .font(&mono_font::ascii::FONT_6X13_BOLD)
+            .text_color(BinaryColor::On)
+            .build(),
+    };
+    let cpu_display = DisplayInfo {
+        pos: Point::new(0, 25),
+        style: MonoTextStyleBuilder::new()
+            .font(&mono_font::ascii::FONT_6X13_BOLD)
+            .text_color(BinaryColor::On)
+            .build(),
+    };
+    let mem_display = DisplayInfo {
+        pos: Point::new(0, 40),
+        style: MonoTextStyleBuilder::new()
+            .font(&mono_font::ascii::FONT_6X13_BOLD)
+            .text_color(BinaryColor::On)
+            .build(),
+    };
+    let cpu_temperature_display = DisplayInfo {
+        pos: Point::new(0, 60),
+        style: MonoTextStyleBuilder::new()
+            .font(&mono_font::ascii::FONT_6X13_BOLD)
+            .text_color(BinaryColor::On)
+            .build(),
+    };
+    // return 出去
+    (top_display,cpu_display,mem_display,cpu_temperature_display)
+}
+
+pub fn dht11_display_info() -> (DisplayInfo,DisplayInfo,DisplayInfo) {
+    let top_display = DisplayInfo {
+        pos: Point::new(0, 10),
+        style: MonoTextStyleBuilder::new()
+            .font(&mono_font::ascii::FONT_6X13_BOLD)
+            .text_color(BinaryColor::On)
+            .build(),
+    };
+    let middle_display = DisplayInfo {
+        pos: Point::new(0, 35),
+        style: MonoTextStyleBuilder::new()
+            .font(&mono_font::ascii::FONT_6X13_BOLD)
+            .text_color(BinaryColor::On)
+            .build(),
+    };
+    let bottom_display = DisplayInfo {
+        pos: Point::new(0, 55),
+        style: MonoTextStyleBuilder::new()
+            .font(&mono_font::ascii::FONT_6X13_BOLD)
+            .text_color(BinaryColor::On)
+            .build(),
+    };
+
+    // return 出去
+    (top_display,middle_display,bottom_display)
+}
+
