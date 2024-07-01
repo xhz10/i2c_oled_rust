@@ -4,7 +4,6 @@ use std::thread;
 use std::time::Duration;
 use rppal::i2c::I2c;
 use ssd1306::prelude::I2CInterface;
-use i2c_oled_rust::button::{button_init};
 use i2c_oled_rust::display::{cpu_display_info, dht11_display_info, DisplayInfo, GraphicDisplay, init_i2c_display};
 use i2c_oled_rust::i2c::{init_i2c_interface};
 use i2c_oled_rust::rsp_dht11::get_temperature_humidity;
