@@ -13,4 +13,3 @@ rppal = { version = "0.18.0", features = ["hal"] }
 
 [target.armv7-unknown-linux-musleabihf]
 linker = "arm-linux-musleabihf-ld"
-

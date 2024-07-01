@@ -1,10 +1,15 @@
+use std::sync::{Arc, Mutex};
 use embedded_graphics::{prelude::*};
 use ssd1306::{size::DisplaySize128x64};
 use std::thread;
 use std::time::Duration;
+use rppal::gpio::Trigger;
 use rppal::i2c::I2c;
 use ssd1306::prelude::I2CInterface;
+use i2c_oled_rust::button::button_init;
 use i2c_oled_rust::display::{cpu_display_info, dht11_display_info, DisplayInfo, GraphicDisplay, init_i2c_display};
+use i2c_oled_rust::event_queue::Event::BUTTON;
+use i2c_oled_rust::event_queue::EventQueue;
 use i2c_oled_rust::i2c::{init_i2c_interface};
 use i2c_oled_rust::rsp_dht11::get_temperature_humidity;
 use i2c_oled_rust::sysop::SystemOperation;
@@ -16,16 +21,22 @@ fn main() {
     // 初始化display
     let mut display: _ = init_i2c_display(i2c_interface);
     let sys = SystemOperation::new();
-    // 初始化按钮的pin操作
-    // let button_pin = button_init();
+    // 创建一个事件队列
+    let mut queue = Arc::new(Mutex::new(EventQueue::new()));
+    let pop_queue = queue.clone();
+    // 初始化按钮的pin操作,设置按钮中断 低电平触发
+    button_init(queue);
     // 获取展示的position
     let cpu_show_position = cpu_display_info();
     let dht11_show_position = dht11_display_info();
-    let mut mut_switch  = false;
+    let mut show_switch = true;
     loop {
+        if let Some(event) = pop_queue.lock().unwrap().pop() {
+            if event == BUTTON {
+                show_switch = !show_switch;
+            }
+        }
         display.clear();
-        // ip 是一定要输出的
-        let show_switch = mut_switch;
         match show_switch {
             // true展示CPU
             true => {show_cpu(&sys, &mut display, &cpu_show_position.0,
@@ -36,8 +47,6 @@ fn main() {
         }
         // 刷新显示屏
         display.flush();
-        // 每次都切换一下
-        mut_switch = !mut_switch;
         // 5秒一轮询
         thread::sleep(Duration::from_secs(5));
     }
