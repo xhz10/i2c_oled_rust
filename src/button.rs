@@ -9,12 +9,3 @@ pub fn button_init() -> InputPin {
     gpio.get(button_pin).expect("Failed to get GPIO pin")
         .into_input_pulldown()
 }
-
-
-pub fn user_put(pin: &InputPin) -> bool {
-    loop {
-        if pin.is_low() {
-            true
-        }
-    }
-}

@@ -14,7 +14,7 @@ fn main() {
     // 初始化i2c接口
     let i2c_interface = init_i2c_interface();
     // 初始化display
-    let mut display: GraphicDisplay<I2CInterface<I2c>, DisplaySize128x64> = init_i2c_display(i2c_interface);
+    let mut display: _ = init_i2c_display(i2c_interface);
     let sys = SystemOperation::new();
     // 初始化按钮的pin操作
     // let button_pin = button_init();

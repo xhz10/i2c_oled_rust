@@ -52,7 +52,7 @@ where
 
 }
 
-pub fn init_i2c_display(i2c_interface :I2CInterface<I2c>) -> GraphicDisplay<I2CInterface<I2c>, DisplaySize128x64>{
+pub fn init_i2c_display<'a>(i2c_interface :I2CInterface<I2c>) -> GraphicDisplay<'a,I2CInterface<I2c>, DisplaySize128x64>{
     GraphicDisplay::new(
         i2c_interface,
         DisplaySize128x64,
@@ -60,7 +60,7 @@ pub fn init_i2c_display(i2c_interface :I2CInterface<I2c>) -> GraphicDisplay<I2CI
     )
 }
 
-pub fn cpu_display_info() -> (DisplayInfo,DisplayInfo,DisplayInfo,DisplayInfo) {
+pub fn cpu_display_info<'a>() -> (DisplayInfo<'a>, DisplayInfo<'a>, DisplayInfo<'a>, DisplayInfo<'a>) {
     let top_display = DisplayInfo {
         pos: Point::new(0, 10),
         style: MonoTextStyleBuilder::new()
@@ -93,7 +93,7 @@ pub fn cpu_display_info() -> (DisplayInfo,DisplayInfo,DisplayInfo,DisplayInfo) {
     (top_display,cpu_display,mem_display,cpu_temperature_display)
 }
 
-pub fn dht11_display_info() -> (DisplayInfo,DisplayInfo,DisplayInfo) {
+pub fn dht11_display_info<'a>() -> (DisplayInfo<'a>, DisplayInfo<'a>, DisplayInfo<'a>) {
     let top_display = DisplayInfo {
         pos: Point::new(0, 10),
         style: MonoTextStyleBuilder::new()
